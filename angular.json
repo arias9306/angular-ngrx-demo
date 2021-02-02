@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "defaultProject": "arias-store",
+  "projects": {
+    "arias-store": {
+      "projectType": "application",
+      "root": "apps/arias-store",
+      "sourceRoot": "apps/arias-store/src",
+      "prefix": "angular-ngrx-demo",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/arias-store",
+            "index": "apps/arias-store/src/index.html",
+            "main": "apps/arias-store/src/main.ts",
+            "polyfills": "apps/arias-store/src/polyfills.ts",
+            "tsConfig": "apps/arias-store/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/arias-store/src/favicon.ico",
+              "apps/arias-store/src/assets"
+            ],
+            "styles": ["apps/arias-store/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/arias-store/src/environments/environment.ts",
+                  "with": "apps/arias-store/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "arias-store:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "arias-store:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "arias-store:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/arias-store/src/**/*.ts",
+              "apps/arias-store/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/arias-store"],
+          "options": {
+            "jestConfig": "apps/arias-store/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "arias-store-e2e": {
+      "root": "apps/arias-store-e2e",
+      "sourceRoot": "apps/arias-store-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/arias-store-e2e/cypress.json",
+            "tsConfig": "apps/arias-store-e2e/tsconfig.e2e.json",
+            "devServerTarget": "arias-store:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "arias-store:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/arias-store-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  }
+}
