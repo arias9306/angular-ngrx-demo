@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     component: ShellComponent,
     children: [
-      { path: 'wellcome', component: HomeComponent },
+      { path: 'home', component: HomeComponent },
       {
         path: 'products',
         loadChildren: () =>
